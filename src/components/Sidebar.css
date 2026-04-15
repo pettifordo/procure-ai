@@ -8,9 +8,17 @@
   overflow-y: auto;
 }
 
+.sidebar-section-label {
+  padding: 1rem 1rem 0.375rem;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--color-text-secondary);
+  letter-spacing: 1px;
+}
+
 .sidebar-nav {
   flex: 1;
-  padding: 0.5rem 0;
+  padding: 0.25rem 0;
 }
 
 .sidebar-item {
@@ -57,13 +65,66 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  flex: 1;
 }
 
-.sidebar-footer {
-  border-top: 1px solid var(--color-border);
+.sidebar-badge {
+  background: #EA001E;
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 10px;
+  min-width: 18px;
+  text-align: center;
+}
+
+.sidebar-agent-box {
+  margin: 0.5rem;
+  padding: 0.75rem;
+  background: #F7F9FB;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  font-size: 12px;
+}
+
+.agent-box-header {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: 0.5rem;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.agent-box-item {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
   padding: 0.25rem 0;
+  color: var(--color-text-secondary);
 }
 
-.sidebar-toggle {
-  font-family: inherit;
+.agent-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.agent-dot.online {
+  background: #2E844A;
+}
+
+.agent-dot.offline {
+  background: #B0ADAB;
+}
+
+.agent-box-status {
+  margin-left: auto;
+  font-size: 11px;
+  color: #2E844A;
+  font-weight: 500;
 }

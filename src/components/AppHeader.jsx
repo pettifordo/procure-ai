@@ -1,4 +1,4 @@
-import { Search, Bell, HelpCircle, Settings, User } from 'lucide-react'
+import { Search, Bell, HelpCircle, Settings, User, Bot } from 'lucide-react'
 import './AppHeader.css'
 
 function AppHeader() {
@@ -6,8 +6,8 @@ function AppHeader() {
     <header className="app-header">
       <div className="header-left">
         <div className="header-logo">
-          <div className="logo-icon">E</div>
-          <span className="logo-text">Enterprise UI</span>
+          <div className="logo-icon"><Bot size={16} /></div>
+          <span className="logo-text">ProcureAI</span>
         </div>
       </div>
 
@@ -16,19 +16,23 @@ function AppHeader() {
           <Search size={16} className="search-icon" />
           <input
             type="text"
-            placeholder="Search records, reports, and more..."
+            placeholder="Search POs, vendors, materials..."
             className="search-input"
           />
         </div>
       </div>
 
       <div className="header-right">
+        <div className="agent-status-pill">
+          <span className="agent-pulse" />
+          <span>2 Agents Active</span>
+        </div>
         <button className="header-action" title="Help">
           <HelpCircle size={18} />
         </button>
         <button className="header-action" title="Notifications">
           <Bell size={18} />
-          <span className="notification-badge">3</span>
+          <span className="notification-badge">5</span>
         </button>
         <button className="header-action" title="Settings">
           <Settings size={18} />
