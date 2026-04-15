@@ -1,0 +1,33 @@
+@import '@salesforce-ux/design-system/assets/styles/salesforce-lightning-design-system.min.css';
+
+:root {
+  --nav-width: 240px;
+  --header-height: 48px;
+  --color-brand: #0176D3;
+  --color-brand-dark: #014486;
+  --color-bg-page: #F3F3F3;
+  --color-bg-surface: #FFFFFF;
+  --color-text-primary: #181818;
+  --color-text-secondary: #706E6B;
+  --color-border: #E5E5E5;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Salesforce Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--color-bg-page);
+  color: var(--color-text-primary);
+  overflow: hidden;
+  height: 100vh;
+}
+
+#root {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
