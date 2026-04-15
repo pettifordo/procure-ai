@@ -3,6 +3,7 @@ import AppHeader from './components/AppHeader'
 import Sidebar from './components/Sidebar'
 import AgentChat from './pages/AgentChat'
 import GoodsReceipts from './pages/GoodsReceipts'
+import PurchaseReqs from './pages/PurchaseReqs'
 import './App.css'
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
           <Routes>
             <Route path="/" element={<AgentChat />} />
             <Route path="/goods-receipts" element={<GoodsReceipts />} />
+            <Route path="/purchase-reqs" element={<PurchaseReqs />} />
           </Routes>
         </main>
       </div>
