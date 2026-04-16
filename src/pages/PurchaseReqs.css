@@ -388,6 +388,209 @@
   cursor: pointer;
 }
 
+/* File Picker Card */
+.file-picker-card {
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  margin: 0.75rem 0;
+  overflow: hidden;
+}
+
+.file-picker-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  background: #FAFAF9;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.file-picker-header svg { color: #7526C3; }
+
+.file-picker-body {
+  padding: 0.5rem 0;
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.file-folder-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.25rem;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  user-select: none;
+}
+
+.file-folder-row:hover { background: #F7F7F7; }
+
+.folder-chevron {
+  transition: transform 0.15s;
+  color: var(--color-text-secondary);
+  flex-shrink: 0;
+}
+
+.folder-chevron.open { transform: rotate(90deg); }
+
+.folder-icon { color: #D4A017; flex-shrink: 0; }
+
+.folder-count {
+  margin-left: auto;
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--color-text-secondary);
+}
+
+.file-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 1.25rem 0.4rem 3rem;
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--color-text-primary);
+  transition: background 0.1s;
+}
+
+.file-row:hover { background: #F3E8FF; }
+
+.file-row.file-match {
+  background: #FEFCE8;
+  border-left: 3px solid #7526C3;
+  padding-left: calc(3rem - 3px);
+}
+
+.file-row.file-match:hover { background: #F3E8FF; }
+
+.file-row.file-selected {
+  background: #EDE4F7;
+}
+
+.file-icon { color: #D32F2F; flex-shrink: 0; }
+
+.file-name {
+  flex: 1;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.file-ai-match {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 10px;
+  font-weight: 600;
+  color: #7526C3;
+  background: #F3E8FF;
+  padding: 1px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.file-meta {
+  font-size: 11px;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+
+.file-picker-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0.75rem;
+  border-top: 1px dashed var(--color-border);
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  background: #FAFAF9;
+}
+
+/* Attachment Card */
+.attachment-card {
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  margin: 0.75rem 0;
+  overflow: hidden;
+}
+
+.attachment-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.25rem;
+  background: #FAFAF9;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.attachment-card-header svg { color: var(--color-text-secondary); }
+
+.attachment-card-body { padding: 0.75rem 1.25rem; }
+
+.attachment-file {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.attachment-file-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: #FEE2E2;
+  color: #D32F2F;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.attachment-file-info { flex: 1; min-width: 0; }
+
+.attachment-file-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.attachment-file-meta {
+  font-size: 11px;
+  color: var(--color-text-secondary);
+  margin-top: 1px;
+}
+
+.attachment-check {
+  color: #2E844A;
+  flex-shrink: 0;
+}
+
+.attachment-card-footer {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0.5rem 1.25rem;
+  background: #F3E8FF;
+  border-top: 1px solid var(--color-border);
+  font-size: 11px;
+  font-weight: 500;
+  color: #7526C3;
+}
+
 .spin {
   animation: spin 1s linear infinite;
 }

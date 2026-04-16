@@ -19,6 +19,11 @@ import {
   ShieldCheck,
   ArrowRight,
   Sparkles,
+  Folder,
+  FolderOpen,
+  File,
+  Paperclip,
+  ChevronRight,
 } from 'lucide-react'
 import './PurchaseReqs.css'
 
@@ -61,6 +66,19 @@ function generateSchedule() {
   return months
 }
 
+const MOCK_FILES = [
+  { id: 'folder-quotes', name: 'Quotes', type: 'folder', children: [
+    { id: 'q1', name: 'SAP_BTP_Process_Automation_Quote_2026.pdf', type: 'pdf', size: '2.4 MB', date: '10 Apr 2026', match: true },
+    { id: 'q2', name: 'ServiceNow_ITSM_Renewal_2026.pdf', type: 'pdf', size: '1.1 MB', date: '28 Mar 2026' },
+    { id: 'q3', name: 'AWS_Enterprise_Support_Q2.pdf', type: 'pdf', size: '890 KB', date: '15 Mar 2026' },
+  ]},
+  { id: 'folder-contracts', name: 'Contracts', type: 'folder', children: [
+    { id: 'c1', name: 'Microsoft_EA_2025-2028.pdf', type: 'pdf', size: '5.2 MB', date: '1 Jan 2025' },
+    { id: 'c2', name: 'CrowdStrike_Falcon_Agreement.pdf', type: 'pdf', size: '3.1 MB', date: '15 Jun 2025' },
+  ]},
+  { id: 'folder-invoices', name: 'Invoices', type: 'folder', children: [] },
+]
+
 const THINKING_DELAY = 1500
 
 function PurchaseReqs() {
@@ -68,8 +86,10 @@ function PurchaseReqs() {
   const [inputValue, setInputValue] = useState('')
   const [isTyping, setIsTyping] = useState(false)
   const [showPrompts, setShowPrompts] = useState(true)
-  const [flowStage, setFlowStage] = useState('idle') // idle, ask_quote, extracting, show_quote, creating_pr, show_pr, approval_started
+  const [flowStage, setFlowStage] = useState('idle') // idle, ask_quote, file_select, extracting, show_quote, creating_pr, show_pr, attaching_quote, approval_prompt, approval_starting, approval_started, approval_approved
   const [showSchedule, setShowSchedule] = useState(false)
+  const [openFolders, setOpenFolders] = useState({ 'folder-quotes': true })
+  const [selectedFile, setSelectedFile] = useState(null)
   const chatEndRef = useRef(null)
 
   const scrollToBottom = () => {
@@ -108,7 +128,7 @@ function PurchaseReqs() {
 
     addMessage('user', text)
 
-    if (flowStage === 'ask_quote') {
+    if (flowStage === 'ask_quote' || flowStage === 'file_select') {
       await runQuoteExtraction(text)
     } else {
       const lower = text.toLowerCase()
@@ -123,8 +143,27 @@ function PurchaseReqs() {
   }
 
   const runSubscriptionFlow = async () => {
-    await typeAndAdd("I'll help you set up a new software subscription. First, I need the vendor quote.\n\nPlease share the quote — you can paste a file path, a SharePoint link, or drag and drop the document.")
-    setFlowStage('ask_quote')
+    await typeAndAdd("I'll help you set up a new software subscription. First, I need the vendor quote.\n\nSelect the quote file below, paste a file path, or drag and drop the document.")
+    setFlowStage('file_select')
+  }
+
+  const toggleFolder = (folderId) => {
+    setOpenFolders(prev => ({ ...prev, [folderId]: !prev[folderId] }))
+  }
+
+  const handleFileSelect = async (file) => {
+    setSelectedFile(file.id)
+    addMessage('user', `Selected: ${file.name}`)
+    setFlowStage('extracting')
+
+    await typeAndAdd(`Got it — reading **${file.name}**. Let me analyze the quote document...`, 1000)
+
+    setIsTyping(true)
+    await new Promise(r => setTimeout(r, 2500))
+    setIsTyping(false)
+
+    addMessage('agent', "I've extracted the following details from the quote:")
+    setFlowStage('show_quote')
   }
 
   const runQuoteExtraction = async (userInput) => {
@@ -160,6 +199,24 @@ function PurchaseReqs() {
 
     setFlowStage('show_pr')
 
+    // Attach quote step
+    await new Promise(r => setTimeout(r, 1200))
+    setFlowStage('attaching_quote')
+
+    await typeAndAdd("Attaching the vendor quote to PR-2026-0350 for the approval package...", 1000)
+
+    setIsTyping(true)
+    await new Promise(r => setTimeout(r, 1800))
+    setIsTyping(false)
+
+    addMessage('agent',
+      "**Quote attached successfully.**\n" +
+      "- Document: SAP_BTP_Process_Automation_Quote_2026.pdf\n" +
+      "- Attached to: PR-2026-0350\n" +
+      "- Category: Vendor Quote\n" +
+      "- Verified: Quote reference " + QUOTE_DATA.quoteRef + " matches PR line items"
+    )
+
     await new Promise(r => setTimeout(r, 1500))
 
     setIsTyping(true)
@@ -186,6 +243,27 @@ function PurchaseReqs() {
 
     setFlowStage('approval_started')
   }
+
+  // Auto-approve after 20 seconds
+  useEffect(() => {
+    if (flowStage === 'approval_started') {
+      const timer = setTimeout(() => {
+        setFlowStage('approval_approved')
+        addMessage('agent',
+          "**Sarah Chen has approved PR-2026-0350!**\n\n" +
+          "PO-78620 has been auto-created and sent to SAP SE. Here's the summary:\n" +
+          "- PO Number: **PO-78620**\n" +
+          "- Vendor: SAP SE\n" +
+          "- Total Value: EUR 360,000.00 (36 x EUR 10,000.00)\n" +
+          "- First GR due: **1 July 2026**\n" +
+          "- Approval comment: _\"Approved. Aligns with our BTP adoption roadmap. — S. Chen\"_\n\n" +
+          "The first goods receipt line is now in your GR queue and will appear next month. Is there anything else?"
+        )
+        setShowPrompts(true)
+      }, 20000)
+      return () => clearTimeout(timer)
+    }
+  }, [flowStage])
 
   const schedule = generateSchedule()
 
@@ -217,6 +295,45 @@ function PurchaseReqs() {
             <div className="message-avatar"><Bot size={16} /></div>
             <div className="message-bubble">
               <div className="typing-indicator"><span /><span /><span /></div>
+            </div>
+          </div>
+        )}
+
+        {/* File Picker */}
+        {flowStage === 'file_select' && (
+          <div className="file-picker-card">
+            <div className="file-picker-header">
+              <FolderOpen size={16} />
+              <span>SharePoint — Procurement Documents</span>
+            </div>
+            <div className="file-picker-body">
+              {MOCK_FILES.map(folder => (
+                <div key={folder.id} className="file-folder">
+                  <div className="file-folder-row" onClick={() => toggleFolder(folder.id)}>
+                    <ChevronRight size={14} className={`folder-chevron ${openFolders[folder.id] ? 'open' : ''}`} />
+                    {openFolders[folder.id] ? <FolderOpen size={16} className="folder-icon" /> : <Folder size={16} className="folder-icon" />}
+                    <span className="folder-name">{folder.name}</span>
+                    <span className="folder-count">{folder.children.length} files</span>
+                  </div>
+                  {openFolders[folder.id] && folder.children.map(file => (
+                    <div
+                      key={file.id}
+                      className={`file-row ${file.match ? 'file-match' : ''} ${selectedFile === file.id ? 'file-selected' : ''}`}
+                      onClick={() => handleFileSelect(file)}
+                    >
+                      <File size={14} className="file-icon" />
+                      <span className="file-name">{file.name}</span>
+                      {file.match && <span className="file-ai-match"><Sparkles size={10} /> AI Suggested</span>}
+                      <span className="file-meta">{file.size}</span>
+                      <span className="file-meta">{file.date}</span>
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+            <div className="file-picker-footer">
+              <Upload size={14} />
+              <span>Or drag and drop a file here</span>
             </div>
           </div>
         )}
@@ -304,7 +421,7 @@ function PurchaseReqs() {
         )}
 
         {/* PR Schedule */}
-        {(flowStage === 'show_pr' || flowStage === 'approval_prompt' || flowStage === 'approval_starting' || flowStage === 'approval_started') && (
+        {(['show_pr','attaching_quote','approval_prompt','approval_starting','approval_started','approval_approved'].includes(flowStage)) && (
           <div className="schedule-card">
             <div className="schedule-header" onClick={() => setShowSchedule(!showSchedule)}>
               <div className="schedule-header-left">
@@ -346,6 +463,32 @@ function PurchaseReqs() {
           </div>
         )}
 
+        {/* Attachment Card */}
+        {(['approval_prompt','approval_starting','approval_started','approval_approved'].includes(flowStage)) && (
+          <div className="attachment-card">
+            <div className="attachment-card-header">
+              <Paperclip size={16} />
+              <span>Attachments</span>
+            </div>
+            <div className="attachment-card-body">
+              <div className="attachment-file">
+                <div className="attachment-file-icon">
+                  <FileText size={18} />
+                </div>
+                <div className="attachment-file-info">
+                  <div className="attachment-file-name">SAP_BTP_Process_Automation_Quote_2026.pdf</div>
+                  <div className="attachment-file-meta">2.4 MB — Vendor Quote — Ref: {QUOTE_DATA.quoteRef}</div>
+                </div>
+                <CheckCircle2 size={16} className="attachment-check" />
+              </div>
+            </div>
+            <div className="attachment-card-footer">
+              <Sparkles size={12} />
+              <span>AI verified: quote amounts match all 36 PR schedule lines</span>
+            </div>
+          </div>
+        )}
+
         {/* Approval Prompt Button */}
         {flowStage === 'approval_prompt' && (
           <div className="approval-prompt-card">
@@ -355,12 +498,12 @@ function PurchaseReqs() {
           </div>
         )}
 
-        {/* Approval Started */}
-        {flowStage === 'approval_started' && (
-          <div className="approval-card">
+        {/* Approval Timeline */}
+        {(flowStage === 'approval_started' || flowStage === 'approval_approved') && (
+          <div className={`approval-card ${flowStage === 'approval_approved' ? 'approved' : ''}`}>
             <div className="approval-card-header">
               <ShieldCheck size={18} />
-              <span>Approval Workflow Active</span>
+              <span>{flowStage === 'approval_approved' ? 'Approval Workflow Complete' : 'Approval Workflow Active'}</span>
             </div>
             <div className="approval-card-body">
               <div className="approval-timeline">
@@ -385,25 +528,37 @@ function PurchaseReqs() {
                     <div className="approval-step-meta">Vendor on approved supplier list — passed</div>
                   </div>
                 </div>
-                <div className="approval-step active">
-                  <Loader2 size={16} className="spin" />
+                <div className={`approval-step ${flowStage === 'approval_approved' ? 'done' : 'active'}`}>
+                  {flowStage === 'approval_approved' ? <CheckCircle2 size={16} /> : <Loader2 size={16} className="spin" />}
                   <div>
                     <div className="approval-step-title">CIO Approval — Sarah Chen</div>
-                    <div className="approval-step-meta">Email and Teams notification sent. Awaiting response.</div>
+                    <div className="approval-step-meta">
+                      {flowStage === 'approval_approved'
+                        ? 'Approved — "Aligns with our BTP adoption roadmap."'
+                        : 'Email and Teams notification sent. Awaiting response.'}
+                    </div>
                   </div>
                 </div>
-                <div className="approval-step pending">
-                  <span className="step-dot-empty" />
+                <div className={`approval-step ${flowStage === 'approval_approved' ? 'done' : 'pending'}`}>
+                  {flowStage === 'approval_approved' ? <CheckCircle2 size={16} /> : <span className="step-dot-empty" />}
                   <div>
                     <div className="approval-step-title">PO Creation</div>
-                    <div className="approval-step-meta">Will auto-create once approved</div>
+                    <div className="approval-step-meta">
+                      {flowStage === 'approval_approved'
+                        ? 'PO-78620 created and sent to SAP SE'
+                        : 'Will auto-create once approved'}
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
             <div className="approval-card-footer">
               <Bot size={14} />
-              <span>I'll notify you as soon as Sarah approves. The PO will be created automatically and the first GR line (Jul 2026) will be ready for processing.</span>
+              <span>
+                {flowStage === 'approval_approved'
+                  ? 'All steps complete. PO-78620 is active and the first GR line (Jul 2026) has been added to your queue.'
+                  : "I'll notify you as soon as Sarah approves. The PO will be created automatically and the first GR line (Jul 2026) will be ready for processing."}
+              </span>
             </div>
           </div>
         )}
@@ -423,10 +578,10 @@ function PurchaseReqs() {
           </div>
         )}
 
-        {flowStage === 'ask_quote' && (
+        {(flowStage === 'ask_quote' || flowStage === 'file_select') && (
           <div className="upload-hint">
             <Upload size={14} />
-            <span>Paste a file path, SharePoint link, or type the quote location</span>
+            <span>Select a file above, paste a path, or type a SharePoint link</span>
           </div>
         )}
 
