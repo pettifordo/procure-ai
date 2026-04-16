@@ -190,6 +190,7 @@ function AgentChat() {
 
   const toggleHistory = (id) => {
     setExpandedHistory(prev => prev === id ? null : id)
+    setTimeout(scrollToBottom, 100)
   }
 
   const getTrend = (itemId, currentAmount) => {
