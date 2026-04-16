@@ -51,6 +51,8 @@ function AgentChat() {
   const [editValue, setEditValue] = useState('')
   const [showPrompts, setShowPrompts] = useState(true)
   const [expandedHistory, setExpandedHistory] = useState(null)
+  const [completedItems, setCompletedItems] = useState([])
+  const [showBreakdown, setShowBreakdown] = useState(false)
   const chatEndRef = useRef(null)
   const inputRef = useRef(null)
 
@@ -147,6 +149,7 @@ function AgentChat() {
         setCompleted(true)
         setShowGrList(false)
         const selected = grItems.filter(i => i.selected)
+        setCompletedItems(selected)
         const totalValue = selected.reduce((s, i) => s + i.totalValue, 0)
         addMessage('agent',
           `All done! I've successfully posted **${selected.length} goods receipts** totalling **EUR ${totalValue.toLocaleString('en', { minimumFractionDigits: 2 })}**.\n\n` +
@@ -377,6 +380,69 @@ function AgentChat() {
                 ))}
               </div>
             </div>
+          </div>
+        )}
+
+        {completed && completedItems.length > 0 && (
+          <div className="gr-breakdown-card">
+            <div className="gr-breakdown-header" onClick={() => setShowBreakdown(!showBreakdown)}>
+              <div className="gr-breakdown-header-left">
+                <PackageCheck size={16} />
+                <span>GR Posting Summary — {completedItems.length} items</span>
+              </div>
+              <button className="gr-breakdown-toggle">
+                {showBreakdown ? 'Hide' : 'View'} Breakdown
+                {showBreakdown ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+              </button>
+            </div>
+            {showBreakdown && (
+              <>
+                <div className="gr-breakdown-body">
+                  <table className="gr-breakdown-table">
+                    <thead>
+                      <tr>
+                        <th>Vendor</th>
+                        <th>Description</th>
+                        <th>PO</th>
+                        <th>Cost Center</th>
+                        <th>Amount</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {completedItems.map(item => (
+                        <tr key={item.id}>
+                          <td className="gr-bd-vendor">{item.vendor}</td>
+                          <td className="gr-bd-desc">{item.description}</td>
+                          <td className="gr-bd-po">{item.poNumber}</td>
+                          <td className="gr-bd-cc">{item.costCenter}</td>
+                          <td className="gr-bd-amt">EUR {item.totalValue.toLocaleString('en', { minimumFractionDigits: 2 })}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <div className="gr-breakdown-footer">
+                  <div className="gr-breakdown-totals">
+                    {Object.entries(
+                      completedItems.reduce((acc, item) => {
+                        const cat = item.category
+                        acc[cat] = (acc[cat] || 0) + item.totalValue
+                        return acc
+                      }, {})
+                    ).map(([cat, val]) => (
+                      <div key={cat} className="gr-bd-cat-row">
+                        <span className="gr-bd-cat-name">{cat}</span>
+                        <span className="gr-bd-cat-val">EUR {val.toLocaleString('en', { minimumFractionDigits: 2 })}</span>
+                      </div>
+                    ))}
+                    <div className="gr-bd-cat-row gr-bd-total-row">
+                      <span className="gr-bd-cat-name">Total</span>
+                      <span className="gr-bd-cat-val">EUR {completedItems.reduce((s, i) => s + i.totalValue, 0).toLocaleString('en', { minimumFractionDigits: 2 })}</span>
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         )}
 
