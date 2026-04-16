@@ -16,8 +16,14 @@ import {
   Calendar,
   Sparkles,
   User,
+  History,
+  TrendingUp,
+  TrendingDown,
+  Minus,
+  ChevronDown,
+  ChevronUp,
 } from 'lucide-react'
-import { myGoodsReceipts, suggestedPrompts } from '../data/mockData'
+import { myGoodsReceipts, suggestedPrompts, grHistory } from '../data/mockData'
 import './AgentChat.css'
 
 const ICON_MAP = {
@@ -44,6 +50,7 @@ function AgentChat() {
   const [editingId, setEditingId] = useState(null)
   const [editValue, setEditValue] = useState('')
   const [showPrompts, setShowPrompts] = useState(true)
+  const [expandedHistory, setExpandedHistory] = useState(null)
   const chatEndRef = useRef(null)
   const inputRef = useRef(null)
 
@@ -178,6 +185,20 @@ function AgentChat() {
     setEditingId(null)
   }
 
+  const toggleHistory = (id) => {
+    setExpandedHistory(prev => prev === id ? null : id)
+  }
+
+  const getTrend = (itemId, currentAmount) => {
+    const history = grHistory[itemId]
+    if (!history || history.length === 0) return null
+    const lastAmount = history[0].amount
+    const diff = currentAmount - lastAmount
+    const pct = ((diff / lastAmount) * 100).toFixed(1)
+    if (Math.abs(diff) < 1) return { direction: 'flat', pct: '0.0', diff: 0 }
+    return { direction: diff > 0 ? 'up' : 'down', pct: Math.abs(pct), diff }
+  }
+
   const selectedItems = grItems.filter(i => i.selected)
   const selectedTotal = selectedItems.reduce((s, i) => s + i.totalValue, 0)
 
@@ -228,52 +249,106 @@ function AgentChat() {
             </div>
 
             <div className="gr-inline-items">
-              {grItems.map((item) => (
-                <div key={item.id} className={`gr-inline-item ${!item.selected ? 'deselected' : ''}`}>
-                  <input
-                    type="checkbox"
-                    checked={item.selected}
-                    onChange={() => toggleItem(item.id)}
-                    className="gr-check"
-                  />
-                  <div className="gr-inline-info">
-                    <div className="gr-inline-desc">{item.description}</div>
-                    <div className="gr-inline-meta">
-                      {item.vendor} &middot; {item.poNumber} &middot; {item.category}
-                    </div>
-                  </div>
-                  <div className="gr-inline-amount">
-                    {editingId === item.id ? (
-                      <div className="amt-edit" onClick={e => e.stopPropagation()}>
-                        <span className="amt-prefix">EUR</span>
-                        <input
-                          type="number"
-                          value={editValue}
-                          onChange={e => setEditValue(e.target.value)}
-                          className="amt-input"
-                          autoFocus
-                          onKeyDown={e => e.key === 'Enter' && saveEdit(item.id)}
-                        />
-                        <button className="amt-save" onClick={() => saveEdit(item.id)}>
-                          <CheckCircle2 size={14} />
-                        </button>
-                        <button className="amt-cancel" onClick={() => setEditingId(null)}>
-                          <X size={12} />
-                        </button>
+              {grItems.map((item) => {
+                const trend = getTrend(item.id, item.totalValue)
+                const history = grHistory[item.id] || []
+                const isExpanded = expandedHistory === item.id
+                return (
+                  <div key={item.id} className={`gr-inline-item-wrap ${!item.selected ? 'deselected' : ''}`}>
+                    <div className="gr-inline-item">
+                      <input
+                        type="checkbox"
+                        checked={item.selected}
+                        onChange={() => toggleItem(item.id)}
+                        className="gr-check"
+                      />
+                      <div className="gr-inline-info">
+                        <div className="gr-inline-desc">{item.description}</div>
+                        <div className="gr-inline-meta">
+                          {item.vendor} &middot; {item.poNumber} &middot; {item.category}
+                          {history.length > 0 && (
+                            <button className="gr-history-link" onClick={() => toggleHistory(item.id)}>
+                              <History size={10} />
+                              GR History
+                              {isExpanded ? <ChevronUp size={10} /> : <ChevronDown size={10} />}
+                            </button>
+                          )}
+                        </div>
                       </div>
-                    ) : (
-                      <span className="amt-display" onClick={() => startEdit(item.id, item.totalValue)}>
-                        EUR {item.totalValue.toLocaleString('en', { minimumFractionDigits: 2 })}
-                        <Edit3 size={11} className="amt-edit-icon" />
-                      </span>
+                      <div className="gr-inline-amount">
+                        {editingId === item.id ? (
+                          <div className="amt-edit" onClick={e => e.stopPropagation()}>
+                            <span className="amt-prefix">EUR</span>
+                            <input
+                              type="number"
+                              value={editValue}
+                              onChange={e => setEditValue(e.target.value)}
+                              className="amt-input"
+                              autoFocus
+                              onKeyDown={e => e.key === 'Enter' && saveEdit(item.id)}
+                            />
+                            <button className="amt-save" onClick={() => saveEdit(item.id)}>
+                              <CheckCircle2 size={14} />
+                            </button>
+                            <button className="amt-cancel" onClick={() => setEditingId(null)}>
+                              <X size={12} />
+                            </button>
+                          </div>
+                        ) : (
+                          <span className="amt-display" onClick={() => startEdit(item.id, item.totalValue)}>
+                            EUR {item.totalValue.toLocaleString('en', { minimumFractionDigits: 2 })}
+                            <Edit3 size={11} className="amt-edit-icon" />
+                          </span>
+                        )}
+                        {trend && !editingId && (
+                          <div className={`amt-trend ${trend.direction}`}>
+                            {trend.direction === 'up' && <TrendingUp size={10} />}
+                            {trend.direction === 'down' && <TrendingDown size={10} />}
+                            {trend.direction === 'flat' && <Minus size={10} />}
+                            <span>{trend.direction === 'flat' ? 'No change' : `${trend.pct}% vs last month`}</span>
+                          </div>
+                        )}
+                      </div>
+                      <div className="gr-inline-confidence" title={item.aiNote}>
+                        <Sparkles size={12} />
+                        <span>{item.aiConfidence}%</span>
+                      </div>
+                    </div>
+                    {isExpanded && (
+                      <div className="gr-history-panel">
+                        <div className="gr-history-title">
+                          <History size={12} />
+                          Last {history.length} months — {item.vendor}
+                        </div>
+                        <table className="gr-history-table">
+                          <thead>
+                            <tr>
+                              <th>Month</th>
+                              <th>GR #</th>
+                              <th>Amount</th>
+                              <th>Note</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {history.map((h, hi) => (
+                              <tr key={hi}>
+                                <td>{h.month}</td>
+                                <td className="gr-hist-num">{h.grNumber}</td>
+                                <td className="gr-hist-amt">EUR {h.amount.toLocaleString('en', { minimumFractionDigits: 2 })}</td>
+                                <td className="gr-hist-note">{h.note || '—'}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                        <div className="gr-history-avg">
+                          Avg: EUR {(history.reduce((s, h) => s + h.amount, 0) / history.length).toLocaleString('en', { minimumFractionDigits: 2 })}
+                          {' '}/ month
+                        </div>
+                      </div>
                     )}
                   </div>
-                  <div className="gr-inline-confidence" title={item.aiNote}>
-                    <Sparkles size={12} />
-                    <span>{item.aiConfidence}%</span>
-                  </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
 
             <div className="gr-inline-footer">

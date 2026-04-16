@@ -168,8 +168,21 @@
 }
 
 .gr-inline-items {
-  max-height: 420px;
+  max-height: 480px;
   overflow-y: auto;
+}
+
+.gr-inline-item-wrap {
+  border-bottom: 1px solid #F0F0F0;
+  transition: all 0.15s;
+}
+
+.gr-inline-item-wrap:last-child {
+  border-bottom: none;
+}
+
+.gr-inline-item-wrap.deselected {
+  opacity: 0.45;
 }
 
 .gr-inline-item {
@@ -177,20 +190,10 @@
   align-items: center;
   gap: 0.75rem;
   padding: 0.625rem 1.25rem;
-  border-bottom: 1px solid #F0F0F0;
-  transition: all 0.15s;
 }
 
-.gr-inline-item:last-child {
-  border-bottom: none;
-}
-
-.gr-inline-item:hover {
+.gr-inline-item-wrap:hover > .gr-inline-item {
   background: #FAFAF9;
-}
-
-.gr-inline-item.deselected {
-  opacity: 0.45;
 }
 
 .gr-check {
@@ -309,6 +312,114 @@
 
 .gr-inline-confidence svg {
   color: #7526C3;
+}
+
+/* GR History Link */
+.gr-history-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  margin-left: 8px;
+  padding: 1px 6px;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--color-brand);
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.1s;
+}
+
+.gr-history-link:hover {
+  background: #EBF5FE;
+  border-color: var(--color-brand);
+}
+
+/* Amount Trend */
+.amt-trend {
+  font-size: 10px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  justify-content: flex-end;
+  margin-top: 2px;
+}
+
+.amt-trend.up { color: #B7560A; }
+.amt-trend.down { color: #2E844A; }
+.amt-trend.flat { color: var(--color-text-secondary); }
+
+/* GR History Panel */
+.gr-history-panel {
+  padding: 0.5rem 1.25rem 0.75rem 3.25rem;
+  background: #F7F9FB;
+  border-top: 1px solid #EEE;
+}
+
+.gr-history-title {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: 0.4rem;
+}
+
+.gr-history-title svg { color: var(--color-brand); }
+
+.gr-history-table {
+  width: 100%;
+  font-size: 11px;
+  border-collapse: collapse;
+}
+
+.gr-history-table th {
+  text-align: left;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  padding: 3px 8px 3px 0;
+  border-bottom: 1px solid #E5E5E5;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.gr-history-table td {
+  padding: 3px 8px 3px 0;
+  color: var(--color-text-primary);
+  border-bottom: 1px solid #F0F0F0;
+}
+
+.gr-hist-num {
+  font-family: monospace;
+  font-size: 10px;
+  color: var(--color-text-secondary);
+}
+
+.gr-hist-amt {
+  font-weight: 600;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.gr-hist-note {
+  color: var(--color-text-secondary);
+  font-style: italic;
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.gr-history-avg {
+  margin-top: 0.4rem;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-brand);
 }
 
 /* Footer / Approve Button */

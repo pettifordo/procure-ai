@@ -193,6 +193,100 @@ export const myGoodsReceipts = [
   },
 ]
 
+// GR History — past 6 months for each item
+export const grHistory = {
+  'GR-001': [
+    { month: 'Apr 2026', amount: 13000.00, status: 'Posted', grNumber: 'GR-260401' },
+    { month: 'Mar 2026', amount: 13000.00, status: 'Posted', grNumber: 'GR-260301' },
+    { month: 'Feb 2026', amount: 12350.00, status: 'Posted', grNumber: 'GR-260201', note: '10 seats removed (leavers)' },
+    { month: 'Jan 2026', amount: 13000.00, status: 'Posted', grNumber: 'GR-260101' },
+    { month: 'Dec 2025', amount: 13000.00, status: 'Posted', grNumber: 'GR-251201' },
+    { month: 'Nov 2025', amount: 13000.00, status: 'Posted', grNumber: 'GR-251101' },
+  ],
+  'GR-002': [
+    { month: 'Apr 2026', amount: 27560.00, status: 'Posted', grNumber: 'GR-260402' },
+    { month: 'Mar 2026', amount: 26800.00, status: 'Posted', grNumber: 'GR-260302' },
+    { month: 'Feb 2026', amount: 25900.00, status: 'Posted', grNumber: 'GR-260202' },
+    { month: 'Jan 2026', amount: 24100.00, status: 'Posted', grNumber: 'GR-260102' },
+    { month: 'Dec 2025', amount: 23800.00, status: 'Posted', grNumber: 'GR-251202' },
+    { month: 'Nov 2025', amount: 22400.00, status: 'Posted', grNumber: 'GR-251102' },
+  ],
+  'GR-003': [
+    { month: 'Apr 2026', amount: 59200.00, status: 'Posted', grNumber: 'GR-260403', note: 'Sprint 13 — 320 hrs' },
+    { month: 'Mar 2026', amount: 55500.00, status: 'Posted', grNumber: 'GR-260303', note: 'Sprint 12 — 300 hrs' },
+    { month: 'Feb 2026', amount: 51800.00, status: 'Posted', grNumber: 'GR-260203', note: 'Sprint 11 — 280 hrs' },
+    { month: 'Jan 2026', amount: 51800.00, status: 'Posted', grNumber: 'GR-260103', note: 'Sprint 10 — 280 hrs' },
+    { month: 'Dec 2025', amount: 37000.00, status: 'Posted', grNumber: 'GR-251203', note: 'Sprint 9 — 200 hrs (holidays)' },
+    { month: 'Nov 2025', amount: 55500.00, status: 'Posted', grNumber: 'GR-251103', note: 'Sprint 8 — 300 hrs' },
+  ],
+  'GR-004': [
+    { month: 'Apr 2026', amount: 29700.00, status: 'Posted', grNumber: 'GR-260404' },
+    { month: 'Mar 2026', amount: 29700.00, status: 'Posted', grNumber: 'GR-260304' },
+    { month: 'Feb 2026', amount: 28050.00, status: 'Posted', grNumber: 'GR-260204', note: '10 seats reduced' },
+    { month: 'Jan 2026', amount: 29700.00, status: 'Posted', grNumber: 'GR-260104' },
+    { month: 'Dec 2025', amount: 29700.00, status: 'Posted', grNumber: 'GR-251204' },
+    { month: 'Nov 2025', amount: 29700.00, status: 'Posted', grNumber: 'GR-251104' },
+  ],
+  'GR-005': [
+    { month: 'Apr 2026', amount: 10200.00, status: 'Posted', grNumber: 'GR-260405' },
+    { month: 'Mar 2026', amount: 10200.00, status: 'Posted', grNumber: 'GR-260305' },
+    { month: 'Feb 2026', amount: 10200.00, status: 'Posted', grNumber: 'GR-260205' },
+    { month: 'Jan 2026', amount: 10200.00, status: 'Posted', grNumber: 'GR-260105' },
+    { month: 'Dec 2025', amount: 10200.00, status: 'Posted', grNumber: 'GR-251205' },
+    { month: 'Nov 2025', amount: 10200.00, status: 'Posted', grNumber: 'GR-251105' },
+  ],
+  'GR-006': [
+    { month: 'Apr 2026', amount: 33600.00, status: 'Posted', grNumber: 'GR-260406', note: 'Milestone 2 — UX audits' },
+    { month: 'Mar 2026', amount: 25200.00, status: 'Posted', grNumber: 'GR-260306', note: 'Milestone 1 — discovery' },
+  ],
+  'GR-007': [
+    { month: 'Apr 2026', amount: 18500.00, status: 'Posted', grNumber: 'GR-260407' },
+    { month: 'Mar 2026', amount: 18500.00, status: 'Posted', grNumber: 'GR-260307' },
+    { month: 'Feb 2026', amount: 18500.00, status: 'Posted', grNumber: 'GR-260207' },
+    { month: 'Jan 2026', amount: 18500.00, status: 'Posted', grNumber: 'GR-260107' },
+    { month: 'Dec 2025', amount: 18500.00, status: 'Posted', grNumber: 'GR-251207' },
+    { month: 'Nov 2025', amount: 18500.00, status: 'Posted', grNumber: 'GR-251107' },
+  ],
+  'GR-008': [
+    { month: 'Apr 2026', amount: 18860.00, status: 'Posted', grNumber: 'GR-260408', note: '820 hosts' },
+    { month: 'Mar 2026', amount: 18400.00, status: 'Posted', grNumber: 'GR-260308', note: '800 hosts' },
+    { month: 'Feb 2026', amount: 17940.00, status: 'Posted', grNumber: 'GR-260208', note: '780 hosts' },
+    { month: 'Jan 2026', amount: 17250.00, status: 'Posted', grNumber: 'GR-260108', note: '750 hosts' },
+    { month: 'Dec 2025', amount: 16560.00, status: 'Posted', grNumber: 'GR-251208', note: '720 hosts' },
+    { month: 'Nov 2025', amount: 16100.00, status: 'Posted', grNumber: 'GR-251108', note: '700 hosts' },
+  ],
+  'GR-009': [
+    { month: 'Apr 2026', amount: 45000.00, status: 'Posted', grNumber: 'GR-260409' },
+    { month: 'Mar 2026', amount: 45000.00, status: 'Posted', grNumber: 'GR-260309' },
+    { month: 'Feb 2026', amount: 45000.00, status: 'Posted', grNumber: 'GR-260209' },
+    { month: 'Jan 2026', amount: 45000.00, status: 'Posted', grNumber: 'GR-260109' },
+    { month: 'Dec 2025', amount: 45000.00, status: 'Posted', grNumber: 'GR-251209' },
+    { month: 'Nov 2025', amount: 45000.00, status: 'Posted', grNumber: 'GR-251109' },
+  ],
+  'GR-010': [
+    { month: 'Apr 2026', amount: 13687.50, status: 'Posted', grNumber: 'GR-260410', note: '1,095 users' },
+    { month: 'Mar 2026', amount: 13437.50, status: 'Posted', grNumber: 'GR-260310', note: '1,075 users' },
+    { month: 'Feb 2026', amount: 13250.00, status: 'Posted', grNumber: 'GR-260210', note: '1,060 users' },
+    { month: 'Jan 2026', amount: 13125.00, status: 'Posted', grNumber: 'GR-260110', note: '1,050 users' },
+    { month: 'Dec 2025', amount: 12875.00, status: 'Posted', grNumber: 'GR-251210', note: '1,030 users' },
+    { month: 'Nov 2025', amount: 12500.00, status: 'Posted', grNumber: 'GR-251110', note: '1,000 users' },
+  ],
+  'GR-011': [
+    { month: 'Apr 2026', amount: 16800.00, status: 'Posted', grNumber: 'GR-260411' },
+    { month: 'Mar 2026', amount: 16800.00, status: 'Posted', grNumber: 'GR-260311' },
+    { month: 'Feb 2026', amount: 16800.00, status: 'Posted', grNumber: 'GR-260211' },
+    { month: 'Jan 2026', amount: 16800.00, status: 'Posted', grNumber: 'GR-260111' },
+    { month: 'Dec 2025', amount: 16800.00, status: 'Posted', grNumber: 'GR-251211' },
+    { month: 'Nov 2025', amount: 16800.00, status: 'Posted', grNumber: 'GR-251111' },
+  ],
+  'GR-012': [
+    { month: 'Apr 2026', amount: 74400.00, status: 'Posted', grNumber: 'GR-260412', note: 'Sprint 7 — 480 hrs' },
+    { month: 'Mar 2026', amount: 62000.00, status: 'Posted', grNumber: 'GR-260312', note: 'Sprint 6 — 400 hrs' },
+    { month: 'Feb 2026', amount: 62000.00, status: 'Posted', grNumber: 'GR-260212', note: 'Sprint 5 — 400 hrs' },
+    { month: 'Jan 2026', amount: 46500.00, status: 'Posted', grNumber: 'GR-260112', note: 'Sprint 4 — 300 hrs (ramp-up)' },
+  ],
+}
+
 export const suggestedPrompts = [
   {
     id: 'gr-mine',
