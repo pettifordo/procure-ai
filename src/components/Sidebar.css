@@ -79,6 +79,57 @@
   text-align: center;
 }
 
+/* Submenu styles */
+.sidebar-menu-group {
+  /* wrapper for parent + children */
+}
+
+.sidebar-parent-row {
+  display: flex;
+  align-items: center;
+}
+
+.sidebar-parent-row .sidebar-item {
+  flex: 1;
+}
+
+.sidebar-expand-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  margin-right: 4px;
+  border-radius: 4px;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+
+.sidebar-expand-btn:hover {
+  background: #E8E8E8;
+  color: var(--color-text-primary);
+}
+
+.sidebar-submenu {
+  padding: 2px 0;
+}
+
+.sidebar-subitem {
+  padding-left: 2.5rem !important;
+  font-size: 12px !important;
+  gap: 0.5rem !important;
+}
+
+.sidebar-subitem .sidebar-icon {
+  width: 14px;
+  height: 14px;
+}
+
+/* Agent Status Box */
 .sidebar-agent-box {
   margin: 0.5rem;
   padding: 0.75rem;
