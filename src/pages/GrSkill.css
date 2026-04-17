@@ -71,6 +71,12 @@
   color: var(--color-text-primary);
 }
 
+.flow-step.hitl {
+  background: #FEF3C7;
+  color: #92400E;
+  border: 1px solid #F59E0B;
+}
+
 .flow-arrow {
   color: var(--color-text-secondary);
   flex-shrink: 0;

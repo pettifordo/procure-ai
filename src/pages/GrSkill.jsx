@@ -1,11 +1,10 @@
 import {
   Sparkles,
-  Bot,
+  Search,
   Zap,
-  Target,
-  Database,
-  FileCheck,
-  RefreshCw,
+  Lightbulb,
+  UserCheck,
+  Send,
   Shield,
   ArrowRight,
   CheckCircle2,
@@ -14,50 +13,50 @@ import './GrSkill.css'
 
 const skills = [
   {
-    id: 'invoice-match',
-    name: 'Invoice Matching',
-    description: 'Automatically match incoming invoices to purchase orders and validate amounts, quantities, and terms.',
-    icon: FileCheck,
+    id: 'find-pos',
+    name: 'Find POs',
+    description: 'Scan all assigned purchase orders to identify which ones require goods receipting for the current period.',
+    icon: Search,
     status: 'active',
     accuracy: '99.2%',
   },
   {
-    id: 'usage-analysis',
-    name: 'Usage Analysis',
-    description: 'Analyze cloud and SaaS usage data to predict GR amounts for variable-cost services.',
-    icon: Database,
+    id: 'apply-rules',
+    name: 'Apply GR Rules & Hints',
+    description: 'Apply vendor-specific calculation rules, fixed values, usage-based formulas, and agent hints to pre-fill GR amounts.',
+    icon: Lightbulb,
     status: 'active',
-    accuracy: '94.8%',
-  },
-  {
-    id: 'timesheet-verify',
-    name: 'Timesheet Verification',
-    description: 'Cross-reference vendor timesheets with project management tools (Jira, Azure DevOps) to verify hours.',
-    icon: Target,
-    status: 'active',
-    accuracy: '97.1%',
+    accuracy: '96.8%',
   },
   {
     id: 'anomaly-detect',
-    name: 'Anomaly Detection',
-    description: 'Detect unusual amounts, duplicate entries, and spending anomalies against historical patterns.',
+    name: 'Check Anomalies',
+    description: 'Detect unusual amounts, duplicate entries, and spending anomalies against historical patterns and thresholds.',
     icon: Shield,
     status: 'active',
     accuracy: '96.5%',
   },
   {
-    id: 'auto-post',
-    name: 'Auto-Post GR',
-    description: 'Automatically post goods receipts for items that meet confidence thresholds and approval rules.',
+    id: 'hitl-approval',
+    name: 'HITL - Approval / Adjustment',
+    description: 'Present GR items to the user for human-in-the-loop review. Allow amount adjustments, item deselection, and final approval.',
+    icon: UserCheck,
+    status: 'active',
+    accuracy: '100%',
+  },
+  {
+    id: 'post-gr',
+    name: 'Post GR',
+    description: 'Post approved goods receipts to SAP, update GL accounts, and generate GR document numbers.',
     icon: Zap,
     status: 'active',
     accuracy: '100%',
   },
   {
-    id: 'vendor-confirm',
-    name: 'Vendor Confirmation',
-    description: 'Send automated confirmation emails to vendors after GR posting with document references.',
-    icon: RefreshCw,
+    id: 'inform-vendor',
+    name: 'Inform Vendor',
+    description: 'Send automated confirmation emails to vendors after GR posting with document references and payment details.',
+    icon: Send,
     status: 'active',
     accuracy: '100%',
   },
@@ -79,17 +78,17 @@ function GrSkill() {
       <div className="grskill-flow">
         <div className="flow-label">GR Agent Workflow</div>
         <div className="flow-steps">
-          <div className="flow-step"><Bot size={14} /> Receive PO Data</div>
+          <div className="flow-step"><Search size={14} /> Find POs</div>
           <ArrowRight size={14} className="flow-arrow" />
-          <div className="flow-step"><FileCheck size={14} /> Match Invoices</div>
-          <ArrowRight size={14} className="flow-arrow" />
-          <div className="flow-step"><Target size={14} /> Verify Sources</div>
+          <div className="flow-step"><Lightbulb size={14} /> Apply GR Rules & Hints</div>
           <ArrowRight size={14} className="flow-arrow" />
           <div className="flow-step"><Shield size={14} /> Check Anomalies</div>
           <ArrowRight size={14} className="flow-arrow" />
+          <div className="flow-step hitl"><UserCheck size={14} /> HITL - Approval / Adjustment</div>
+          <ArrowRight size={14} className="flow-arrow" />
           <div className="flow-step"><Zap size={14} /> Post GR</div>
           <ArrowRight size={14} className="flow-arrow" />
-          <div className="flow-step"><RefreshCw size={14} /> Confirm</div>
+          <div className="flow-step"><Send size={14} /> Inform Vendor</div>
         </div>
       </div>
 
